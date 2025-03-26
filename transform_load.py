@@ -1,10 +1,15 @@
+import os
 from googleapiclient.discovery import build
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import isodate
 
-API_KEY = 'AIzaSyDo8PM-DQiMqI9kHAu-6h6Ln_VkNKBDSo8'
+# Fetch API key from environment variable
+API_KEY = os.getenv('YOUTUBE_API_KEY')
+if not API_KEY:
+    raise EnvironmentError("YOUTUBE_API_KEY environment variable not set.")
+
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 def get_category_mapping():

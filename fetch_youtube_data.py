@@ -1,7 +1,12 @@
+import os
 import pandas as pd
 from googleapiclient.discovery import build
 
-API_KEY = 'AIzaSyDo8PM-DQiMqI9kHAu-6h6Ln_VkNKBDSo8'
+# Fetch API key from environment variable
+API_KEY = os.getenv('YOUTUBE_API_KEY')
+if not API_KEY:
+    raise EnvironmentError("YOUTUBE_API_KEY environment variable not set.")
+
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 SYSDATE = pd.Timestamp.now().strftime('%Y-%m-%dT%H:%M:%SZ')
