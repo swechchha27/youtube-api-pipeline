@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Others
+logs/*.log    # Ignore application logs
+config/*.ini  # Ignore config files
+data/*.csv    # Ignore large data files
