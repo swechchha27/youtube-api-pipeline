@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "youtube-pipeline"
+version = "0.1.0"
+description = "A pipeline for interacting with the YouTube API."
+authors = [
+    { name = "Swechchha Agarwal", email = "swechchhagoyal27@gmail.com" }
+]
+dependencies = []
+
+[project.scripts]
+youtube_pipeline = "youtube_pipeline.__main__:main"
