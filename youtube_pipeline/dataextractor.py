@@ -64,7 +64,7 @@ class YoutubeDataExtractor:
             categories.append(
                 {
                     'category_id': item['id'],
-                    'title': item['snippet']['title']
+                    'category_title': item['snippet']['title']
                 }
             )
         df = convert_to_dataframe(categories)
@@ -100,5 +100,40 @@ class YoutubeDataExtractor:
                     'favorite_count': item['statistics'].get('favoriteCount', 0),
                 }
             )
+        df = convert_to_dataframe(videos)
+        return df
+    
+    '''THis method fetches the details of provided videos from videos.list endpoint'''
+    def get_video_details(self, videoIdList, maxResults=5):
+        response = self.youtube_object.videos().list(
+            part='snippet,contentDetails,statistics,topicDetails',
+            id=','.join(videoIdList),
+            maxResults=maxResults
+        ).execute()
+        videos = []
+        for item in response['items']:
+            videos.append(
+                {
+                    'video_id': item['id'],
+                    'video_title': item['snippet']['title'],
+                    'description': item['snippet']['description'],
+                    'localized_title': item['snippet']['localized']['title'],
+                    'localized_description': item['snippet']['localized']['description'],
+                    'published_at': item['snippet']['publishedAt'],
+                    'channel_id': item['snippet']['channelId'],
+                    'channel_title': item['snippet']['channelTitle'],
+                    'category_id': item['snippet']['categoryId'],
+                    'tags': item['snippet'].get('tags', []),
+                    'duration': item['contentDetails']['duration'],
+                    'definition': item['contentDetails']['definition'],
+                    'caption': item['contentDetails'].get('caption', 'false'),
+                    'view_count': item['statistics'].get('viewCount', 0),
+                    'like_count': item['statistics'].get('likeCount', 0),
+                    'comment_count': item['statistics'].get('commentCount', 0),
+                    'favorite_count': item['statistics'].get('favoriteCount', 0),
+                    'topic_categories': item['topicDetails'].get('topicCategories', []),
+                }
+            )
+        # print(videos)
         df = convert_to_dataframe(videos)
         return df
