@@ -173,7 +173,11 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Others
-logs/*.log    # Ignore application logs
+# Log files
+logs/*.log
+
+# Config files
 *.ini
-data/*.csv    # Ignore large data files
+
+# Data files
+data/*
