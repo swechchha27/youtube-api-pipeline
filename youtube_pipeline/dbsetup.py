@@ -7,8 +7,7 @@ dbhost = DBCONFIG["ORACLE_HOST"]
 dbport = DBCONFIG["ORACLE_PORT"]
 dbservice = DBCONFIG["ORACLE_SERVICE"]
     
-def connect_oracle(username):
-    # oracle db config
+def get_dbbconfig(username):
     dbuser = DBCONFIG[f"{username}_USER"]
     dbrole = DBCONFIG.get(f"{username}_ROLE")
     dbpwd = DBCONFIG[f"{username}_PWD"]
@@ -17,28 +16,19 @@ def connect_oracle(username):
         port=dbport,
         service_name=dbservice
     )
-    try:
-        connection = get_connection(
-                    username=dbuser, 
-                    password=dbpwd, 
-                    dsn=dsn_tns, 
-                    role=dbrole
-                    )
-        for row in execute_query(
-            conn=connection,
-            query='SELECT SYSDATE FROM DUAL'
-            ):
-            print(datetime.strptime(str(row[0]), "%Y-%m-%d %H:%M:%S"))
-    except oracledb.Error as error:
-        print(f"Error connecting to database: {error}")
-        if connection:
-            close_connection(connection)
-        
+    return dbuser,dbrole,dbpwd,dsn_tns
 
 def setup_database():
     dbfolder = DBSCRIPTFOLDER
     # Loop over all files inside folder order by sequence in their names
-    pass
+    for path in list(dbfolder.iterdir())[:1]:
+        print(f"Executing {path.name}----------")
+        username = str(path).split('_')[1]
+        dbuser, dbrole, dbpwd, dsn_tns = get_dbbconfig(username)
+        with get_connection(username=dbuser,password=dbpwd,dsn=dsn_tns,role=dbrole) as conn:
+            execute_sql_file(conn, path)
+
 
 if __name__=='__main__':
-    connect_oracle('SYS')
+    # connect_oracle('SYS')
+    setup_database()
