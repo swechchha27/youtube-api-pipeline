@@ -1,4 +1,4 @@
-# YouTube Data API ETL Pipeline
+# YouTube Data API ETL Pipeline (DRAFT - In Progress)
 ## Overview
 This project implements an ETL (Extract, Transform, Load) pipeline to extract data from the YouTube Data API, transform it into a relational format, and load it into an Oracle database for business analysts to be able to implement dashboards using the data for market trend analysis.
 ## Features
